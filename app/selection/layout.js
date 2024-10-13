@@ -1,23 +1,15 @@
 'use client'
 
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 
 export default function RootLayout({ children }) {
-  const router = useRouter();
-  const pathname = usePathname();
+    const router = useRouter();
 
-  if (pathname.includes('/auth') || pathname.includes('/selection')) {
-    return children;
-  }
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('user');
+  const handleLogout = (e) => {
+    e.preventDefault();
     router.push('/auth/login');
   }
 
@@ -32,21 +24,6 @@ export default function RootLayout({ children }) {
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <Link className="nav-link" aria-current="page" href="/">Perfil</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" href="/cv">Hoja de vida</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" href="/createcv">Modificar hoja de vida</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" href="/createcv">
-                    <i className="bi bi-file-earmark-text-fill"></i>
-                    <span className="mx-1">Reporte de hoja de vida</span>
-                  </Link>
-                </li>
               </ul>
               <form className="d-flex" role="search">
                 <button onClick={handleLogout} className="btn btn-outline-light">Cerrar Sesión</button>
