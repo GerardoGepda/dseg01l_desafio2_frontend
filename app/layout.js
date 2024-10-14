@@ -11,10 +11,18 @@ import { useRouter } from "next/navigation";
 export default function RootLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
+  const [user, setUser] = useState(null);
 
   if (pathname.includes('/auth') || pathname.includes('/selection')) {
     return children;
   }
+
+  useEffect(() => {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem('user');
@@ -42,7 +50,7 @@ export default function RootLayout({ children }) {
                   <Link className="nav-link" href="/createcv">Modificar hoja de vida</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" href="/createcv">
+                  <Link className="nav-link" target="_blank" href={`http://desktop-t1sn72l/Reports/report/HojadeVida?CandidatoId=${user.id || '0'}`}>
                     <i className="bi bi-file-earmark-text-fill"></i>
                     <span className="mx-1">Reporte de hoja de vida</span>
                   </Link>
